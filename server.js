@@ -15,4 +15,4 @@ app.use(express.json());
 const userRouter = require("./routes/users");
 app.use("/users", userRouter);
 
-app.listen(PORT, () => console.log(`Server is running on PORT:${PORT}`));
+app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`));

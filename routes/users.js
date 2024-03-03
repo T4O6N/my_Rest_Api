@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const user = require("../models/user");
 
 // Getting all
 router.get("/", async (req, res) => {
@@ -14,8 +13,8 @@ router.get("/", async (req, res) => {
 });
 
 // Getting One
-router.get("/:id", (req, res) => {
-  res.send(req.params.id);
+router.get("/:id", getUser, (req, res) => {
+  res.json(res.user);
 });
 
 // Creating one
@@ -34,9 +33,30 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One
-router.patch("/", (req, res) => {});
+router.patch("/:id", getUser, (req, res) => {});
 
 // Deleting One
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", getUser, async (req, res) => {
+  try {
+    await res.user.remove();
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+async function getUser(req, res, next) {
+  let user;
+  try {
+    user = await User.findById(req.params.id);
+    if (user == null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.user = user;
+  next();
+}
 
 module.exports = router;
