@@ -38,7 +38,10 @@ router.patch("/:id", getUser, (req, res) => {});
 // Deleting One
 router.delete("/:id", getUser, async (req, res) => {
   try {
-    await res.user.remove();
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json({ message: "User deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
