@@ -16,17 +16,8 @@ mongoose
 
 app.use(express.json());
 
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
 const userRouter = require("./routes/users");
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 
 app.listen(port, () =>
   console.log(`Server is running at http://localhost:${port}`)
