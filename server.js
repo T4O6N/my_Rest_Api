@@ -16,12 +16,14 @@ mongoose
 
 app.use(express.json());
 
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
-
-const userRouter = require('./userRouter'); 
-app.get("/users", userRouter);
 
 const userRouter = require("./routes/users");
 app.use("/users", userRouter);
