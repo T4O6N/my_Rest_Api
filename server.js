@@ -20,6 +20,7 @@ app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
 
+const userRouter = require('./userRouter'); 
 app.get("/users", userRouter);
 
 const userRouter = require("./routes/users");
