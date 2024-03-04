@@ -20,6 +20,8 @@ app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
 
+app.get("/users", userRouter);
+
 const userRouter = require("./routes/users");
 app.use("/users", userRouter);
 
