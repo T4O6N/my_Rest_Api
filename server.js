@@ -16,6 +16,10 @@ mongoose
 
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const userRouter = require("./routes/users");
 app.use("/users", userRouter);
 
