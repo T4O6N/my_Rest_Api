@@ -27,13 +27,28 @@ router.post("/", async (req, res) => {
   try {
     const newUser = await user.save();
     res.status(201).json(newUser);
+    console.log("add new user: ", req.body);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // Updating One
-router.patch("/:id", getUser, (req, res) => {});
+router.patch("/:id", getUser, async (req, res) => {
+  if (req.body.name != null) {
+    res.user.name = req.body.name;
+  }
+  if (req.body.lastname != null) {
+    res.user.lastname = req.body.lastname;
+  }
+  try {
+    const updatedUser = await res.user.save();
+    res.json(updatedUser);
+    console.log("user infor has been updated: ", req.body);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+});
 
 // Deleting One
 router.delete("/:id", getUser, async (req, res) => {
@@ -43,6 +58,7 @@ router.delete("/:id", getUser, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     res.json({ message: "User deleted successfully" });
+    console.log("user has been deleted: ", req.body);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
